@@ -1,5 +1,6 @@
 package com.bootcamp.controllers;
 
+import com.bootcamp.commons.enums.EntityType;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.entities.Debat;
 import com.bootcamp.services.DebatService;
@@ -33,7 +34,7 @@ public class DebatController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a debat", notes = "Create a debat")
-    public ResponseEntity<Debat> create(@RequestBody @Valid Debat debat) throws SQLException {
+    public ResponseEntity<Debat> create(@RequestBody  Debat debat) throws SQLException {
         debat = debatService.create(debat);
         return new ResponseEntity<>(debat, HttpStatus.OK);
     }

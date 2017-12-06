@@ -7,7 +7,9 @@ import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.DebatCRUD;
+import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Debat;
+import com.bootcamp.entities.Pilier;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -68,6 +70,10 @@ public class DebatService implements DatabaseConstants {
             debats = debatCRUD.read(criterias, fields);
 
         return debats;
+    }
+
+    public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        return DebatCRUD.read();
     }
 
 }
