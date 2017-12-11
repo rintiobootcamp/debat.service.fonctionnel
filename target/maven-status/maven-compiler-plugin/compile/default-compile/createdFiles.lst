@@ -1,0 +1,10 @@
+com/bootcamp/services/DebatService.class
+com/bootcamp/App.class
+com/bootcamp/version/ApiVersions.class
+com/bootcamp/application/Application.class
+com/bootcamp/enums/MediaType.class
+com/bootcamp/application/MvcConfig.class
+com/bootcamp/application/SwaggerConfig.class
+com/bootcamp/controllers/DebatController.class
+com/bootcamp/application/ApiVersionRequestMappingHandlerMapping.class
+com/bootcamp/controllers/HomeController.class

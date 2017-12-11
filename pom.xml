@@ -183,7 +183,7 @@
             <filtering>true</filtering>
           </resource>
           <resource>
-            <directory>src/main/resources/local</directory>
+            <directory>${config.home}</directory>
           </resource>
 
         </resources>
@@ -200,7 +200,7 @@
             <filtering>true</filtering>
           </resource>
           <resource>
-            <directory>src/main/resources/dev</directory>
+            <directory>${config.home}</directory>
           </resource>
 
         </resources>
@@ -209,7 +209,7 @@
   </profiles>
 
   <build>
-    <finalName>categorieService</finalName>
+    <finalName>debatService</finalName>
 
 
     <plugins>
@@ -244,5 +244,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
+    <config.home>/home/config/dev</config.home>
   </properties>
 </project>

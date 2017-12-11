@@ -1,0 +1,10 @@
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/controllers/HomeController.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/enums/MediaType.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/application/ApiVersionRequestMappingHandlerMapping.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/App.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/application/MvcConfig.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/application/SwaggerConfig.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/controllers/DebatController.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/application/Application.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/version/ApiVersions.java
+/home/soul/bootcamp/Release_1.3.0/debat.service.fonctionnel/src/main/java/com/bootcamp/services/DebatService.java
