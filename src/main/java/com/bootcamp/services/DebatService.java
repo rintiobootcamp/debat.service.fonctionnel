@@ -35,15 +35,13 @@ public class DebatService implements DatabaseConstants {
         return debat;
     }
 
-    public void update(Debat debat) throws SQLException {
-        debatCRUD.update(debat);
+    public boolean update(Debat debat) throws SQLException {
+       return debatCRUD.update(debat);
     }
 
-    public Debat delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         Debat debat = read(id);
-        debatCRUD.delete(debat);
-
-        return debat;
+        return  debatCRUD.delete(debat);
     }
 
     public Debat read(int id) throws SQLException {
@@ -70,6 +68,26 @@ public class DebatService implements DatabaseConstants {
             debats = debatCRUD.read(criterias, fields);
 
         return debats;
+    }
+
+    public Debat getBySujet(String sujet) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("sujet", "=", sujet));
+        List<Debat> debats = debatCRUD.read(criterias);
+
+        return debats.get(0);
+    }
+
+    public boolean exist(Debat  debat) throws Exception{
+        if(getBySujet(debat.getSujet())!=null)
+            return true;
+        return false;
+    }
+
+    public boolean exist(int id) throws Exception{
+        if(read(id)!=null)
+            return true;
+        return false;
     }
 
     public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
