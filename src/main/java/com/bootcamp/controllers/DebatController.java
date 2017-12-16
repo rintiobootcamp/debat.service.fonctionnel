@@ -55,4 +55,14 @@ public class DebatController {
         return new ResponseEntity<Debat>(debat, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Delete  a particuler debats", notes = "delete a particular debat  by id")
+    public ResponseEntity<Boolean> delete(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        boolean done  = debatService.delete(id);
+        return new ResponseEntity<>(done, HttpStatus.OK);
+    }
+
+
+
 }
