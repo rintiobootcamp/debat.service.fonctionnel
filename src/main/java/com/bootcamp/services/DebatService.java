@@ -2,9 +2,11 @@ package com.bootcamp.services;
 
 
 import com.bootcamp.commons.constants.DatabaseConstants;
+import com.bootcamp.commons.enums.EntityType;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
+import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.DebatCRUD;
 import com.bootcamp.crud.PilierCRUD;
@@ -75,6 +77,13 @@ public class DebatService implements DatabaseConstants {
     public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         return DebatCRUD.read();
     }
+    
+     public int getAllDebatByEntity(EntityType entityType) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
+        return DebatCRUD.read(criterias).size();
+    }
+
 
 }
 

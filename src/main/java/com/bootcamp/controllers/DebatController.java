@@ -17,6 +17,8 @@ import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController("DebatContoller")
 @RequestMapping("/debats")
@@ -53,6 +55,25 @@ public class DebatController {
     public ResponseEntity<Debat> getById(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Debat debat = debatService.read(id);
         return new ResponseEntity<Debat>(debat, HttpStatus.OK);
+    }
+    
+      @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
+    public ResponseEntity<Integer> readAllDebatByEntity(@PathVariable("entityType") String entityType ) {
+        EntityType entite = EntityType.valueOf(entityType);
+        int nbDebat =0;
+        HttpStatus httpStatus = null;
+
+        try {
+            nbDebat = debatService.getAllDebatByEntity(entite);
+            httpStatus = HttpStatus.OK;
+        } catch (SQLException ex) {
+            Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null, ex);
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Integer>(nbDebat, httpStatus);
+
     }
 
 }
