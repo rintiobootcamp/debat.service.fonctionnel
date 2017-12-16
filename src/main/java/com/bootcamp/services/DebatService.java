@@ -1,6 +1,5 @@
 package com.bootcamp.services;
 
-
 import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.enums.EntityType;
 import com.bootcamp.commons.exceptions.DatabaseException;
@@ -9,71 +8,109 @@ import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.DebatCRUD;
-import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Debat;
-import com.bootcamp.entities.Pilier;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ *
+ * @author Bello
+ */
 @Component
 public class DebatService implements DatabaseConstants {
 
-    DebatCRUD debatCRUD;
-
-
-    @PostConstruct
-    public void init(){
-        debatCRUD = new DebatCRUD();
-    }
-
+    /**
+     * Insert the given debate entity in the database
+     *
+     * @param debat
+     * @return debate
+     * @throws SQLException
+     */
     public Debat create(Debat debat) throws SQLException {
         debat.setDateMiseAJour(System.currentTimeMillis());
-        debatCRUD.create(debat);
+        DebatCRUD.create(debat);
         return debat;
     }
 
+    /**
+     * Update the given debate entity in the database
+     *
+     * @param debat
+     * @throws SQLException
+     */
     public void update(Debat debat) throws SQLException {
-        debatCRUD.update(debat);
+        DebatCRUD.update(debat);
     }
 
+    /**
+     * Delete the given debate entity in the database
+     *
+     * @param id
+     * @return debate
+     * @throws SQLException
+     */
     public Debat delete(int id) throws SQLException {
         Debat debat = read(id);
-        debatCRUD.delete(debat);
+        DebatCRUD.delete(debat);
 
         return debat;
     }
 
+    /**
+     * Get a debate by its id
+     *
+     * @param id
+     * @return debate
+     * @throws SQLException
+     */
     public Debat read(int id) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
-        List<Debat> debats = debatCRUD.read(criterias);
+        List<Debat> debats = DebatCRUD.read(criterias);
 
         return debats.get(0);
     }
 
-
-
+    /**
+     * Get all the debates in the database matching the given request
+     *
+     * @param request
+     * @return debates list
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
     public List<Debat> read(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
         List<Debat> debats = null;
-        if(criterias == null && fields == null)
-            debats =  debatCRUD.read();
-        else if(criterias!= null && fields==null)
-            debats = debatCRUD.read(criterias);
-        else if(criterias== null && fields!=null)
-            debats = debatCRUD.read(fields);
-        else
-            debats = debatCRUD.read(criterias, fields);
+        if (criterias == null && fields == null) {
+            debats = DebatCRUD.read();
+        } else if (criterias != null && fields == null) {
+            debats = DebatCRUD.read(criterias);
+        } else if (criterias == null && fields != null) {
+            debats = DebatCRUD.read(fields);
+        } else {
+            debats = DebatCRUD.read(criterias, fields);
+        }
 
         return debats;
     }
 
+    /**
+     * Get all the debates of the database
+     *
+     * @return debates list
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
     public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         return DebatCRUD.read();
     }
@@ -86,4 +123,3 @@ public class DebatService implements DatabaseConstants {
 
 
 }
-
