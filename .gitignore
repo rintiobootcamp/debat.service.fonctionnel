@@ -5,3 +5,4 @@ target
 /src/main/resources/local/
 debat.service.fonctionnel.iml
 logs/
+*.out

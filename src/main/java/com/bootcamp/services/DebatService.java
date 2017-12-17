@@ -54,11 +54,10 @@ public class DebatService implements DatabaseConstants {
      * @return debate
      * @throws SQLException
      */
-    public Debat delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         Debat debat = read(id);
         DebatCRUD.delete(debat);
-
-        return debat;
+        return true;
 
     }
 
