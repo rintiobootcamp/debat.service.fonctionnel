@@ -10,6 +10,14 @@
   <name>debat.service.fonctionnel</name>
   <url>http://maven.apache.org</url>
 
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+    <config.home>/home/config/dev</config.home>
+  </properties>
+
+
   <dependencies>
     <!-- https://mvnrepository.com/artifact/org.testng/testng -->
     <dependency>
@@ -17,6 +25,12 @@
       <artifactId>testng</artifactId>
       <version>6.11</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
     </dependency>
 
     <dependency>
@@ -99,18 +113,46 @@
       </exclusions>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <version>1.5.8.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>test</scope>
+      <version>1.4.194</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito</artifactId>
+      <version>1.7.3</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>1.7.3</version>
+      <scope>test</scope>
+    </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.6.2</version>
+      <version>2.7</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.6.2</version>
+      <version>2.7</version>
     </dependency>
 
     <dependency>
@@ -166,6 +208,30 @@
       <artifactId>db-access</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.jayway.restassured/rest-assured -->
+    <dependency>
+      <groupId>com.jayway.restassured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>2.9.0</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>3.0.6</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>spring-mock-mvc</artifactId>
+      <version>3.0.6</version>
+      <scope>test</scope>
+    </dependency>
+
+
   </dependencies>
 
   <profiles>
@@ -183,7 +249,7 @@
             <filtering>true</filtering>
           </resource>
           <resource>
-            <directory>src/main/resources/local</directory>
+            <directory>${config.home}</directory>
           </resource>
 
         </resources>
@@ -200,7 +266,7 @@
             <filtering>true</filtering>
           </resource>
           <resource>
-            <directory>src/main/resources/dev</directory>
+            <directory>${config.home}</directory>
           </resource>
 
         </resources>
@@ -209,7 +275,7 @@
   </profiles>
 
   <build>
-    <finalName>categorieService</finalName>
+    <finalName>debatService</finalName>
 
 
     <plugins>
@@ -233,16 +299,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <failOnMissingWebXml>false</failOnMissingWebXml>
-  </properties>
 </project>

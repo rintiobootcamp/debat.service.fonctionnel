@@ -2,3 +2,7 @@
 .gitignore
 .idea/
 debat.service.fonctionnel.iml
+log.out
+logs/
+target/
+

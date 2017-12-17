@@ -2,14 +2,16 @@ package com.bootcamp.services;
 
 
 import com.bootcamp.commons.constants.DatabaseConstants;
+import com.bootcamp.commons.enums.EntityType;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
+import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.utils.RequestParser;
+import com.bootcamp.crud.CommentaireCRUD;
 import com.bootcamp.crud.DebatCRUD;
-import com.bootcamp.crud.PilierCRUD;
+import com.bootcamp.entities.Commentaire;
 import com.bootcamp.entities.Debat;
-import com.bootcamp.entities.Pilier;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -35,15 +37,13 @@ public class DebatService implements DatabaseConstants {
         return debat;
     }
 
-    public void update(Debat debat) throws SQLException {
-        debatCRUD.update(debat);
+    public boolean update(Debat debat) throws SQLException {
+       return debatCRUD.update(debat);
     }
 
-    public Debat delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         Debat debat = read(id);
-        debatCRUD.delete(debat);
-
-        return debat;
+        return  debatCRUD.delete(debat);
     }
 
     public Debat read(int id) throws SQLException {
@@ -70,6 +70,33 @@ public class DebatService implements DatabaseConstants {
             debats = debatCRUD.read(criterias, fields);
 
         return debats;
+    }
+
+    public List<Debat> getByEntity(EntityType entityType, int entityId) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
+        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), null));
+        return DebatCRUD.read(criterias);
+    }
+
+    public Debat getBySujet(String sujet) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("sujet", "=", sujet));
+        List<Debat> debats = debatCRUD.read(criterias);
+
+        return debats.get(0);
+    }
+
+    public boolean exist(Debat  debat) throws Exception{
+        if(getBySujet(debat.getSujet())!=null)
+            return true;
+        return false;
+    }
+
+    public boolean exist(int id) throws Exception{
+        if(read(id)!=null)
+            return true;
+        return false;
     }
 
     public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
