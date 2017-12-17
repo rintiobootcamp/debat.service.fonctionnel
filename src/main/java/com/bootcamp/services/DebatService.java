@@ -131,6 +131,27 @@ public class DebatService implements DatabaseConstants {
     }
 
 
+/**
+     * get all debate by entity 
+     *
+     * @param entityType
+     * @return List debate
+     * @throws SQLException
+     */
+
+   public List<Debat> getAllDebatByEntity(EntityType entityType, long dateDebut, long dateFin) throws SQLException {
+        Criterias criterias = new Criterias();
+
+        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
+        criterias.addCriteria(new Criteria(new Rule("dateDebut", ">=", dateDebut),"AND"));
+        criterias.addCriteria(new Criteria(new Rule("dateFin", "<=", dateFin),null));
+
+
+        return DebatCRUD.read(criterias);
+    }
+
+
+
 }
 
 
