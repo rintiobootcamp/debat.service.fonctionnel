@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *
+ * @author Bello
+ */
 @RestController("DebatContoller")
 @RequestMapping("/debats")
 @Api(value = "Debat API", description = "Debat API")
@@ -34,14 +38,22 @@ public class DebatController {
     @Autowired
     HttpServletRequest request;
 
+    /**
+     * Create a new debate in the database
+     *
+     * @param debat
+     * @return debate
+     * @throws SQLException
+     */
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a debat", notes = "Create a debat")
-    public ResponseEntity<Debat> create(@RequestBody  Debat debat) throws SQLException {
+    public ResponseEntity<Debat> create(@RequestBody Debat debat) throws SQLException {
         debat = debatService.create(debat);
         return new ResponseEntity<>(debat, HttpStatus.OK);
     }
 
+<<<<<<< HEAD
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a debat", notes = "Update a debat")
@@ -50,6 +62,17 @@ public class DebatController {
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
+=======
+    /**
+     * Get all the debates of the database
+     *
+     * @return debates list
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
+>>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read All Debats", notes = "Read aall the Debats")
@@ -58,8 +81,21 @@ public class DebatController {
         return new ResponseEntity<List<Debat>>(debats, HttpStatus.OK);
     }
 
+<<<<<<< HEAD
 
 
+=======
+    /**
+     * Get a debate knowing its id
+     *
+     * @param id
+     * @return debate
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
+>>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Get one Debats", notes = "Read a particular Debats")
@@ -70,6 +106,7 @@ public class DebatController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
+<<<<<<< HEAD
     @ApiOperation(value = "Delet one Debats", notes = "delete a particular Debats")
     public ResponseEntity<Boolean> delete(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         boolean done =debatService.delete(id);
@@ -83,6 +120,37 @@ public class DebatController {
         EntityType entite = EntityType.valueOf(entityType.toUpperCase());
         List<Debat> debats= debatService.getByEntity(entite,entityId);
         return new ResponseEntity<List<Debat>>(debats, HttpStatus.OK);
+=======
+    @ApiOperation(value = "Delete  a particuler debats", notes = "delete a particular debat  by id")
+    public ResponseEntity<Boolean> delete(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        boolean done  = debatService.delete(id);
+        return new ResponseEntity<>(done, HttpStatus.OK);
+    }
+
+        @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}/{startDate}/{endDate}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
+    public ResponseEntity<List<Debat>> readAllDebatByEntity(@PathVariable("entityType") String entityType, @PathVariable("startDate") long startDate, @PathVariable("endDate") long endDate ) {
+       
+        EntityType entite = EntityType.valueOf(entityType);
+        List<Debat> debats = new ArrayList<>();
+        HttpStatus httpStatus = null;
+
+        try {
+            
+            if(startDate==0 && endDate == 0)
+            debats = debatService.getAllDebatByEntity(entite);
+            else if(startDate!=0 && endDate != 0)
+            debats = debatService.getAllDebatByEntity(entite,startDate,endDate);           
+            
+            httpStatus = HttpStatus.OK;
+        } catch (SQLException ex) {
+            Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null, ex);
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(debats, httpStatus.OK);
+
+>>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
     }
 
 }

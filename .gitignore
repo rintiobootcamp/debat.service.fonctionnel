@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Created by .ignore support plugin (hsz.mobi)
 .gitignore
 .idea/
@@ -6,3 +7,13 @@ log.out
 logs/
 target/
 
+=======
+.idea
+.gradle
+CathegoriesRestServices.iml
+target
+/src/main/resources/local/
+debat.service.fonctionnel.iml
+logs/
+*.out
+>>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
