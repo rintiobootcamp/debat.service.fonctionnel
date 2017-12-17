@@ -17,7 +17,7 @@
 [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ debat.service.fonctionnel ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] skip non existing resourceDirectory /home/soul/bootcamp/Review Release_1.3.0/clone/debat.service.fonctionnel/src/main/resources
-[INFO] Copying 19 resources
+[INFO] Copying 20 resources
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.2:compile (default-compile) @ debat.service.fonctionnel ---
 [INFO] Nothing to compile - all classes are up to date
@@ -49,6 +49,5 @@ log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more in
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v1.5.8.RELEASE)
 
-[32m2017-12-17 00:48:19.332 WAT [background-preinit] o.h.v.i.u.Version INFO : HV000001: Hibernate Validator 5.3.5.Final
-[m[EL Info]: 2017-12-17 00:50:44.859--ServerSession(822664993)--EclipseLink, version: Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd
-[EL Info]: connection: 2017-12-17 00:50:49.764--ServerSession(822664993)--file:/home/soul/bootcamp/Review Release_1.3.0/clone/debat.service.fonctionnel/target/classes/_databasePU login successful
+[32m2017-12-17 13:28:18.501 WAT [background-preinit] o.h.v.i.u.Version INFO : HV000001: Hibernate Validator 5.3.5.Final
+[m

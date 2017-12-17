@@ -87,24 +87,7 @@ public class DebatController {
         return new ResponseEntity<Debat>(debat, HttpStatus.OK);
     }
     
-      @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
-    @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
-    public ResponseEntity<Integer> readAllDebatByEntity(@PathVariable("entityType") String entityType ) {
-        EntityType entite = EntityType.valueOf(entityType);
-        int nbDebat =0;
-        HttpStatus httpStatus = null;
-
-        try {
-            nbDebat = debatService.getAllDebatByEntity(entite);
-            httpStatus = HttpStatus.OK;
-        } catch (SQLException ex) {
-            Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null, ex);
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<Integer>(nbDebat, httpStatus);
-
-    }
+   
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
