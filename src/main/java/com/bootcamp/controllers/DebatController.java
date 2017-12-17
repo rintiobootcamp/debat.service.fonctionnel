@@ -16,7 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController("DebatContoller")
 @RequestMapping("/debats")
@@ -63,6 +66,24 @@ public class DebatController {
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
+    public ResponseEntity<List<Debat>> readAllDebatByEntity(@PathVariable("entityType") String entityType ) {
 
+        EntityType entite = EntityType.valueOf(entityType);
+        List<Debat> debats = new ArrayList<>();
+        HttpStatus httpStatus = null;
+
+        try {
+            debats = debatService.getAllDebatByEntity(entite);
+            httpStatus = HttpStatus.OK;
+        } catch (SQLException ex) {
+            Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null, ex);
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(debats, httpStatus.OK);
+
+    }
 
 }
