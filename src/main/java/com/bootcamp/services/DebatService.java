@@ -34,7 +34,7 @@ public class DebatService implements DatabaseConstants {
      * @throws SQLException
      */
     public Debat create(Debat debat) throws SQLException {
-        debat.setDateMiseAJour(System.currentTimeMillis());
+        debat.setDateCreation(System.currentTimeMillis());
         DebatCRUD.create(debat);
         return debat;
     }
@@ -148,9 +148,9 @@ public class DebatService implements DatabaseConstants {
 
         criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
 
-        criterias.addCriteria(new Criteria(new Rule("dateDebut", ">=", dateDebut),"AND"));
-        criterias.addCriteria(new Criteria(new Rule("dateFin", "<=", dateFin),null));
-       Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null,"critères de sql"+criterias);
+        criterias.addCriteria(new Criteria(new Rule("dateCreation", ">=", dateDebut),"AND"));
+        criterias.addCriteria(new Criteria(new Rule("dateCreation", "<=", dateFin),null));
+//       Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null,"critères de sql"+criterias);
 
         return DebatCRUD.read(criterias);
     }
