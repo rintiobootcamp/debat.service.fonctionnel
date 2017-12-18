@@ -63,7 +63,7 @@ public class DebatController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read All Debats", notes = "Read aall the Debats")
+    @ApiOperation(value = "Read All Debats", notes = "Read all the Debats")
     public ResponseEntity<List<Debat>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         List<Debat> debats = debatService.read(request);
         return new ResponseEntity<List<Debat>>(debats, HttpStatus.OK);
@@ -86,8 +86,7 @@ public class DebatController {
         Debat debat = debatService.read(id);
         return new ResponseEntity<Debat>(debat, HttpStatus.OK);
     }
-    
-   
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
@@ -97,17 +96,22 @@ public class DebatController {
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
+        @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
-    public ResponseEntity<List<Debat>> readAllDebatByEntity(@PathVariable("entityType") String entityType ) {
-
+    public ResponseEntity<List<Debat>> readAllDebatByEntity(@PathVariable("entityType") String entityType, @RequestParam("startDate") long startDate, @RequestParam("endDate") long endDate ) {
+       
         EntityType entite = EntityType.valueOf(entityType);
         List<Debat> debats = new ArrayList<>();
         HttpStatus httpStatus = null;
 
         try {
+            
+            if(startDate==0 && endDate == 0)
             debats = debatService.getAllDebatByEntity(entite);
+            else if(startDate!=0 && endDate != 0)
+            debats = debatService.getAllDebatByEntity(entite,startDate,endDate);           
+            
             httpStatus = HttpStatus.OK;
         } catch (SQLException ex) {
             Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null, ex);

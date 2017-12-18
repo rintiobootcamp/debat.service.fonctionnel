@@ -169,45 +169,45 @@
     </dependencies>
 
 
-    <profiles>
-        <!-- en local -->
-        <profile>
-            <!--profil de production a publier-->
-            <id>local</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                        <filtering>true</filtering>
-                    </resource>
-                    <resource>
-                        <directory>${config.home}</directory>
-                    </resource>
+    <!--<profiles>-->
+        <!--&lt;!&ndash; en local &ndash;&gt;-->
+        <!--<profile>-->
+            <!--&lt;!&ndash;profil de production a publier&ndash;&gt;-->
+            <!--<id>local</id>-->
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
+            <!--<build>-->
+                <!--<resources>-->
+                    <!--<resource>-->
+                        <!--<directory>src/main/resources</directory>-->
+                        <!--<filtering>true</filtering>-->
+                    <!--</resource>-->
+                    <!--<resource>-->
+                        <!--<directory>${config.home}</directory>-->
+                    <!--</resource>-->
 
-                </resources>
-            </build>
-        </profile>
+                <!--</resources>-->
+            <!--</build>-->
+        <!--</profile>-->
 
-        <profile>
-            <!--profil de production a publier-->
-            <id>dev</id>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                        <filtering>true</filtering>
-                    </resource>
-                    <resource>
-                        <directory>${config.home}</directory>
-                    </resource>
+        <!--<profile>-->
+            <!--&lt;!&ndash;profil de production a publier&ndash;&gt;-->
+            <!--<id>dev</id>-->
+            <!--<build>-->
+                <!--<resources>-->
+                    <!--<resource>-->
+                        <!--<directory>src/main/resources</directory>-->
+                        <!--<filtering>true</filtering>-->
+                    <!--</resource>-->
+                    <!--<resource>-->
+                        <!--<directory>${config.home}</directory>-->
+                    <!--</resource>-->
 
-                </resources>
-            </build>
-        </profile>
-    </profiles>
+                <!--</resources>-->
+            <!--</build>-->
+        <!--</profile>-->
+    <!--</profiles>-->
     <build>
         <finalName>debatService</finalName>
 

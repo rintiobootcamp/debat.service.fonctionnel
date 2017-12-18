@@ -7,6 +7,7 @@ import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.utils.RequestParser;
+import com.bootcamp.controllers.DebatController;
 import com.bootcamp.crud.DebatCRUD;
 import com.bootcamp.entities.Debat;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -130,6 +133,28 @@ public class DebatService implements DatabaseConstants {
         criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
         return DebatCRUD.read(criterias);
     }
+
+
+/**
+     * get all debate by entity 
+     *
+     * @param entityType
+     * @return List debate
+     * @throws SQLException
+     */
+
+   public List<Debat> getAllDebatByEntity(EntityType entityType, long dateDebut, long dateFin) throws SQLException {
+        Criterias criterias = new Criterias();
+
+        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
+
+        criterias.addCriteria(new Criteria(new Rule("dateDebut", ">=", dateDebut),"AND"));
+        criterias.addCriteria(new Criteria(new Rule("dateFin", "<=", dateFin),null));
+       Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null,"critères de sql"+criterias);
+
+        return DebatCRUD.read(criterias);
+    }
+
 
 
 }
