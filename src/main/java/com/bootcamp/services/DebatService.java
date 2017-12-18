@@ -8,7 +8,9 @@ import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.controllers.DebatController;
+import com.bootcamp.crud.CommentaireCRUD;
 import com.bootcamp.crud.DebatCRUD;
+import com.bootcamp.entities.Commentaire;
 import com.bootcamp.entities.Debat;
 import org.springframework.stereotype.Component;
 
@@ -38,18 +40,15 @@ public class DebatService implements DatabaseConstants {
         DebatCRUD.create(debat);
         return debat;
     }
-
     /**
      * Update the given debate entity in the database
      *
      * @param debat
      * @throws SQLException
      */
-    public void update(Debat debat) throws SQLException {
-        DebatCRUD.update(debat);
+    public boolean update(Debat debat) throws SQLException {
+       return DebatCRUD.update(debat);
     }
-
-
     /**
      * Delete the given debate entity in the database
      *
@@ -57,12 +56,11 @@ public class DebatService implements DatabaseConstants {
      * @return debate
      * @throws SQLException
      */
+
     public boolean delete(int id) throws SQLException {
-
         Debat debat = read(id);
-        DebatCRUD.delete(debat);
+        return DebatCRUD.delete(debat);
 
-        return true;
 
     }
 
@@ -108,6 +106,34 @@ public class DebatService implements DatabaseConstants {
         return debats;
     }
 
+    public List<Debat> getByEntity(EntityType entityType, int entityId) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
+        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), null));
+        return DebatCRUD.read(criterias);
+    }
+
+    public Debat getBySujet(String sujet) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("sujet", "=", sujet));
+        List<Debat> debats = DebatCRUD.read(criterias);
+
+        return debats.get(0);
+    }
+
+    public boolean exist(Debat  debat) throws Exception{
+        if(getBySujet(debat.getSujet())!=null)
+            return true;
+        return false;
+    }
+
+    public boolean exist(int id) throws Exception{
+        if(read(id)!=null)
+            return true;
+        return false;
+    }
+
+
     /**
      * Get all the debates of the database
      *
@@ -117,6 +143,7 @@ public class DebatService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
+
     public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         return DebatCRUD.read();
     }

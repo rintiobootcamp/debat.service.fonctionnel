@@ -2,6 +2,7 @@ package com.bootcamp.controllers;
 
 import com.bootcamp.commons.enums.EntityType;
 import com.bootcamp.commons.exceptions.DatabaseException;
+import com.bootcamp.entities.Commentaire;
 import com.bootcamp.entities.Debat;
 import com.bootcamp.services.DebatService;
 import com.bootcamp.version.ApiVersions;
@@ -52,6 +53,14 @@ public class DebatController {
         return new ResponseEntity<>(debat, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.PUT)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Update a debat", notes = "Update a debat")
+    public ResponseEntity<Boolean> update(@RequestBody  Debat debat) throws SQLException {
+        boolean done = debatService.update(debat);
+        return new ResponseEntity<>(done, HttpStatus.OK);
+    }
+
     /**
      * Get all the debates of the database
      *
@@ -68,6 +77,8 @@ public class DebatController {
         List<Debat> debats = debatService.read(request);
         return new ResponseEntity<List<Debat>>(debats, HttpStatus.OK);
     }
+
+
 
     /**
      * Get a debate knowing its id
@@ -90,11 +101,13 @@ public class DebatController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Delete  a particuler debats", notes = "delete a particular debat  by id")
+    @ApiOperation(value = "Delet one Debats", notes = "delete a particular Debats")
     public ResponseEntity<Boolean> delete(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
-        boolean done  = debatService.delete(id);
+        boolean done =debatService.delete(id);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
+
+
 
         @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
     @ApiVersions({"1.0"})
