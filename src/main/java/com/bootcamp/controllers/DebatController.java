@@ -53,7 +53,6 @@ public class DebatController {
         return new ResponseEntity<>(debat, HttpStatus.OK);
     }
 
-<<<<<<< HEAD
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a debat", notes = "Update a debat")
@@ -62,7 +61,6 @@ public class DebatController {
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
-=======
     /**
      * Get all the debates of the database
      *
@@ -72,19 +70,16 @@ public class DebatController {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
->>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read All Debats", notes = "Read aall the Debats")
+    @ApiOperation(value = "Read All Debats", notes = "Read all the Debats")
     public ResponseEntity<List<Debat>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         List<Debat> debats = debatService.read(request);
         return new ResponseEntity<List<Debat>>(debats, HttpStatus.OK);
     }
 
-<<<<<<< HEAD
 
 
-=======
     /**
      * Get a debate knowing its id
      *
@@ -95,7 +90,6 @@ public class DebatController {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
->>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Get one Debats", notes = "Read a particular Debats")
@@ -104,33 +98,21 @@ public class DebatController {
         return new ResponseEntity<Debat>(debat, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
-<<<<<<< HEAD
     @ApiOperation(value = "Delet one Debats", notes = "delete a particular Debats")
     public ResponseEntity<Boolean> delete(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         boolean done =debatService.delete(id);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{entityType}/{entityId}")
-    @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read a debat", notes = "Read a debats relative to a given entityType")
-    public ResponseEntity<List<Debat>> readByEntity(@PathVariable("entityType") String entityType, @PathVariable("entityId") int entityId)  throws Exception{
-        EntityType entite = EntityType.valueOf(entityType.toUpperCase());
-        List<Debat> debats= debatService.getByEntity(entite,entityId);
-        return new ResponseEntity<List<Debat>>(debats, HttpStatus.OK);
-=======
-    @ApiOperation(value = "Delete  a particuler debats", notes = "delete a particular debat  by id")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
-        boolean done  = debatService.delete(id);
-        return new ResponseEntity<>(done, HttpStatus.OK);
-    }
 
-        @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}/{startDate}/{endDate}")
+
+        @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
-    public ResponseEntity<List<Debat>> readAllDebatByEntity(@PathVariable("entityType") String entityType, @PathVariable("startDate") long startDate, @PathVariable("endDate") long endDate ) {
+    public ResponseEntity<List<Debat>> readAllDebatByEntity(@PathVariable("entityType") String entityType, @RequestParam("startDate") long startDate, @RequestParam("endDate") long endDate ) {
        
         EntityType entite = EntityType.valueOf(entityType);
         List<Debat> debats = new ArrayList<>();
@@ -150,7 +132,6 @@ public class DebatController {
         }
         return new ResponseEntity<>(debats, httpStatus.OK);
 
->>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
     }
 
 }

@@ -47,7 +47,7 @@ public class DebatControllerIntegrationTest {
      *The Base URI of categorie fonctionnal service,
      * it can be change with the online URIof this service.
      */
-    private String BASE_URI = "http://165.227.69.188:8088/debat";
+    private String BASE_URI = "http://localhost:8088/debat";
 
     /**
      * The path of the Debat controller, according to this controller implementation
@@ -60,6 +60,18 @@ public class DebatControllerIntegrationTest {
      * a error or conflit will be note by your test.
      */
     private int debatId = 0;
+
+    /**
+     * The startDate initialize for statistic method, you have
+     * make sure that this is correct in one of the value in database
+     */
+    private long startDate = 1511907379;
+
+    /**
+     * The endDate initialize for statistic method, you have
+     * make sure that this is correct in one of the value in database
+     */
+    private long endDate = 1511907390;
 
     /**
      * A entity of type:
@@ -141,21 +153,15 @@ public class DebatControllerIntegrationTest {
      */
     @Test(priority = 1, groups = {"DebatTest"})
     public void getDebatByIdTest() throws Exception{
-
         String getDebatById = BASE_URI+DEBAT_PATH+"/"+debatId;
-
         Response response = given()
                 .log().all()
                 .contentType("application/json")
                 .expect()
                 .when()
                 .get(getDebatById);
-
         logger.debug(response.getBody().prettyPrint());
-
         Assert.assertEquals(response.statusCode(), 200) ;
-
-
     }
 
     /**
@@ -187,16 +193,43 @@ public class DebatControllerIntegrationTest {
 
         Assert.assertEquals(response.statusCode(), 200) ;
 
+    }
 
+    /**
+     * Get the statistics of the given entity type
+     * <b>
+     * the comments must exist in the database
+     * </b>
+     * Note that this method will be the third to execute If every done , it
+     * will return a 200 httpStatus code
+     *
+     * @throws Exception
+     */
+    @Test(priority = 3, groups = {"CommentaireTest"})
+    public void statsCommentaire() throws Exception {
+        String statsURI = BASE_URI + DEBAT_PATH +"/stats/"+entityType;
+        Response response = given()
+                .queryParam( "startDate",startDate)
+                .queryParam( "endDate",endDate )
+                .log().all()
+                .contentType("application/json")
+                .expect()
+                .when()
+                .get(statsURI);
+
+        logger.debug(response.getBody().prettyPrint());
+
+        Assert.assertEquals(response.statusCode(), 200);
 
     }
+
 
     /**
      * Get All the debats in the database
      * If every done , it will return a 200 httpStatus code
      * @throws Exception
      */
-    @Test(priority = 3, groups = {"DebatTest"})
+    @Test(priority = 4, groups = {"DebatTest"})
     public void getAllDebatsTest()throws Exception{
         String getAllDebatURI = BASE_URI+DEBAT_PATH;
         Response response = given()
@@ -217,7 +250,7 @@ public class DebatControllerIntegrationTest {
      * If every done , it will return a 200 httpStatus code
      * @throws Exception
      */
-    @Test(priority = 4, groups = {"DebatTest"})
+    @Test(priority = 5, groups = {"DebatTest"})
     public void getDebatsByEntityTest()throws Exception{
         String getDebatByEntityURI = BASE_URI+DEBAT_PATH+"/"+entityType+"/"+entityId;
         Response response = given()
@@ -274,25 +307,6 @@ public class DebatControllerIntegrationTest {
     }
 
     /**
-     * Convert a projets json data to a projet objet list
-     * this json file is in resources
-     * @return a list of projet in this json file
-     * @throws Exception
-     */
-    public List<Projet> getProjectsFromJson() throws Exception {
-        //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile( "data-json" + File.separator + "projets.json");
-
-        String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
-
-        Type typeOfObjectsListNew = new TypeToken<List<Projet>>() {
-        }.getType();
-        List<Projet> projets = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
-
-        return projets;
-    }
-
-    /**
      * Convert a secteurs json data to a secteur objet list
      * this json file is in resources
      * @return a list of secteur in this json file
@@ -311,27 +325,6 @@ public class DebatControllerIntegrationTest {
         return secteurs;
     }
 
-    private Pilier getPilierById(int id) throws Exception {
-        List<Pilier> piliers = loadDataPilierFromJsonFile();
-        Pilier pilier = piliers.stream().filter(item -> item.getId() == id).findFirst().get();
-
-        return pilier;
-    }
-
-    /**
-     * Get on axe by a given ID from the List of axes
-     * @param id
-     * @return
-     * @throws Exception
-     */
-    public Axe getAxeById(int id) throws Exception {
-        List<Axe> axes = loadDataAxeFromJsonFile();
-        Axe axe = axes.stream().filter(item -> item.getId() == id).findFirst().get();
-
-        return axe;
-    }
-
-
     /**
      * Get on debat by a given ID from the List of axes
      * @param id
@@ -345,108 +338,7 @@ public class DebatControllerIntegrationTest {
         return debat;
     }
 
-    /**
-     * Get on secteur by a given ID from the List of secteurs
-     * @param id
-     * @return
-     * @throws Exception
-     */
-    public Secteur getSecteurById(int id) throws Exception {
-        List<Secteur> secteurs = loadDataSecteurFromJsonFile();
-        Secteur secteur = secteurs.stream().filter(item -> item.getId() == id).findFirst().get();
 
-        return secteur;
-    }
-
-    /**
-     * Convert a axes json data to a axe objet list
-     * this json file is in resources
-     * @return a list of axe in this json file
-     * @throws Exception
-     */
-    public List<Axe> loadDataAxeFromJsonFile() throws Exception {
-        //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile( "data-json" + File.separator + "axes.json");
-
-        String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
-
-        Type typeOfObjectsListNew = new TypeToken<List<Axe>>() {
-        }.getType();
-        List<Axe> axes = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
-
-        for (int i = 0; i < axes.size(); i++) {
-            Axe axe = axes.get(i);
-            List<Secteur> secteurs = new LinkedList();
-            switch (i) {
-                case 0:
-                    secteurs.add(getSecteurById(8));
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    secteurs.add(getSecteurById(1));
-                    secteurs.add(getSecteurById(2));
-                    secteurs.add(getSecteurById(5));
-                    secteurs.add(getSecteurById(9));
-                    break;
-                case 4:
-                    secteurs.add(getSecteurById(3));
-                    break;
-                case 5:
-                    secteurs.add(getSecteurById(8));
-                    break;
-                case 6:
-                    secteurs.add(getSecteurById(6));
-                    break;
-            }
-            axe.setSecteurs(secteurs);
-        }
-
-        return axes;
-    }
-
-
-    /**
-     * Convert a piliers json data to a pilier objet list
-     * this json file is in resources
-     * @return a list of pilier in this json file
-     * @throws Exception
-     */
-    public List<Pilier> loadDataPilierFromJsonFile() throws Exception {
-        //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile( "data-json" + File.separator + "piliers.json");
-
-        String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
-
-        Type typeOfObjectsListNew = new TypeToken<List<Pilier>>() {
-        }.getType();
-        List<Pilier> piliers = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
-        //List<Axe> axes = axeRepository.findAll();
-        for (int i = 0; i < piliers.size(); i++) {
-            List<Axe> axes = new LinkedList();
-            Pilier pilier = piliers.get(i);
-            switch (i) {
-                case 0:
-                    axes.add(getAxeById(1));
-                    axes.add(getAxeById(2));
-                    break;
-                case 1:
-                    axes.add(getAxeById(3));
-                    axes.add(getAxeById(4));
-                    axes.add(getAxeById(5));
-                    break;
-                case 2:
-                    axes.add(getAxeById(6));
-                    axes.add(getAxeById(7));
-                    break;
-            }
-            pilier.setAxes(axes);
-        }
-
-        return piliers;
-    }
 
     public List<Debat> loadDataDebatFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();

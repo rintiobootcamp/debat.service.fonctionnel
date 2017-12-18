@@ -7,12 +7,10 @@ import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.utils.RequestParser;
+import com.bootcamp.controllers.DebatController;
 import com.bootcamp.crud.CommentaireCRUD;
 import com.bootcamp.crud.DebatCRUD;
-<<<<<<< HEAD
 import com.bootcamp.entities.Commentaire;
-=======
->>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
 import com.bootcamp.entities.Debat;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -36,31 +36,19 @@ public class DebatService implements DatabaseConstants {
      * @throws SQLException
      */
     public Debat create(Debat debat) throws SQLException {
-        debat.setDateMiseAJour(System.currentTimeMillis());
+        debat.setDateCreation(System.currentTimeMillis());
         DebatCRUD.create(debat);
         return debat;
     }
-
-<<<<<<< HEAD
-    public boolean update(Debat debat) throws SQLException {
-       return debatCRUD.update(debat);
-    }
-
-    public boolean delete(int id) throws SQLException {
-        Debat debat = read(id);
-        return  debatCRUD.delete(debat);
-=======
     /**
      * Update the given debate entity in the database
      *
      * @param debat
      * @throws SQLException
      */
-    public void update(Debat debat) throws SQLException {
-        DebatCRUD.update(debat);
+    public boolean update(Debat debat) throws SQLException {
+       return DebatCRUD.update(debat);
     }
-
-
     /**
      * Delete the given debate entity in the database
      *
@@ -68,12 +56,12 @@ public class DebatService implements DatabaseConstants {
      * @return debate
      * @throws SQLException
      */
+
     public boolean delete(int id) throws SQLException {
         Debat debat = read(id);
-        DebatCRUD.delete(debat);
-        return true;
+        return DebatCRUD.delete(debat);
 
->>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
+
     }
 
     /**
@@ -118,7 +106,6 @@ public class DebatService implements DatabaseConstants {
         return debats;
     }
 
-<<<<<<< HEAD
     public List<Debat> getByEntity(EntityType entityType, int entityId) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
@@ -129,7 +116,7 @@ public class DebatService implements DatabaseConstants {
     public Debat getBySujet(String sujet) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("sujet", "=", sujet));
-        List<Debat> debats = debatCRUD.read(criterias);
+        List<Debat> debats = DebatCRUD.read(criterias);
 
         return debats.get(0);
     }
@@ -146,7 +133,7 @@ public class DebatService implements DatabaseConstants {
         return false;
     }
 
-=======
+
     /**
      * Get all the debates of the database
      *
@@ -156,7 +143,7 @@ public class DebatService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
->>>>>>> d912a95458255b8deece984ec9f9e3ea0c346d7e
+
     public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         return DebatCRUD.read();
     }
@@ -187,9 +174,10 @@ public class DebatService implements DatabaseConstants {
         Criterias criterias = new Criterias();
 
         criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
-        criterias.addCriteria(new Criteria(new Rule("dateDebut", ">=", dateDebut),"AND"));
-        criterias.addCriteria(new Criteria(new Rule("dateFin", "<=", dateFin),null));
 
+        criterias.addCriteria(new Criteria(new Rule("dateCreation", ">=", dateDebut),"AND"));
+        criterias.addCriteria(new Criteria(new Rule("dateCreation", "<=", dateFin),null));
+//       Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null,"critères de sql"+criterias);
 
         return DebatCRUD.read(criterias);
     }
