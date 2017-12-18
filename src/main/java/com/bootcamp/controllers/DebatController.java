@@ -107,6 +107,15 @@ public class DebatController {
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/{entityType}/{entityId}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Read a debat", notes = "Read a debats relative to a given entityType")
+    public ResponseEntity<List<Debat>> readByEntity(@PathVariable("entityType") String entityType, @PathVariable("entityId") int entityId)  throws Exception {
+        EntityType entite = EntityType.valueOf( entityType.toUpperCase() );
+        List<Debat> debats = debatService.getByEntity( entite, entityId );
+        return new ResponseEntity<List<Debat>>( debats, HttpStatus.OK );
+    }
+
 
 
         @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")

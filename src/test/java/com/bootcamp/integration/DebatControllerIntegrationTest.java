@@ -21,6 +21,7 @@ import java.util.List;
 import static com.jayway.restassured.RestAssured.given;
 
 /**
+ * @author Ibrahim
  * <h2> The integration test for Debat controller</h2>
  * <p>
  * In this test class,
@@ -47,7 +48,7 @@ public class DebatControllerIntegrationTest {
      *The Base URI of categorie fonctionnal service,
      * it can be change with the online URIof this service.
      */
-    private String BASE_URI = "http://localhost:8088/debat";
+    private String BASE_URI = "http://104.131.60.151:8088/debat";
 
     /**
      * The path of the Debat controller, according to this controller implementation
