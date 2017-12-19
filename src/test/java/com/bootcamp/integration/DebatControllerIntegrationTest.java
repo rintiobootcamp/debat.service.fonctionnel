@@ -207,7 +207,7 @@ public class DebatControllerIntegrationTest {
      * @throws Exception
      */
     @Test(priority = 3, groups = {"CommentaireTest"})
-    public void statsCommentaire() throws Exception {
+    public void statsDebat() throws Exception {
         String statsURI = BASE_URI + DEBAT_PATH +"/stats/"+entityType;
         Response response = given()
                 .queryParam( "startDate",startDate)
