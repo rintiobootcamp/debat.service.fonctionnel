@@ -45,7 +45,7 @@ public class DebatController {
      * @return debate
      * @throws SQLException
      */
-    @RequestMapping(method = RequestMethod.POST,value = "/admin")
+    @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a debat", notes = "Create a debat")
     public ResponseEntity<Debat> create(@RequestBody Debat debat) throws SQLException {
@@ -99,7 +99,7 @@ public class DebatController {
     }
 
 
-    @RequestMapping(value = "/admin/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Delete one Debats", notes = "delete a particular Debats")
     public ResponseEntity<Boolean> delete(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
