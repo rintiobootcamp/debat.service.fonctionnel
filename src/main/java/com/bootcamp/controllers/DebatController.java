@@ -124,7 +124,7 @@ public class DebatController {
 
         try {
 
-            if (startDate.equals("") && endDate.equals("")) {
+            if (startDate.equals("0") && endDate.equals("0")) {
                 debats = debatService.getAllDebatByEntity(entite);
             } else if (!startDate.equals("") && !endDate.equals("")) {
                 debats = debatService.getAllDebatByEntity(entite, startDate, endDate);
