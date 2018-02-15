@@ -7,19 +7,19 @@ import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.utils.RequestParser;
-import com.bootcamp.controllers.DebatController;
-import com.bootcamp.crud.CommentaireCRUD;
 import com.bootcamp.crud.DebatCRUD;
-import com.bootcamp.entities.Commentaire;
 import com.bootcamp.entities.Debat;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -40,6 +40,7 @@ public class DebatService implements DatabaseConstants {
         DebatCRUD.create(debat);
         return debat;
     }
+
     /**
      * Update the given debate entity in the database
      *
@@ -47,8 +48,9 @@ public class DebatService implements DatabaseConstants {
      * @throws SQLException
      */
     public boolean update(Debat debat) throws SQLException {
-       return DebatCRUD.update(debat);
+        return DebatCRUD.update(debat);
     }
+
     /**
      * Delete the given debate entity in the database
      *
@@ -56,11 +58,9 @@ public class DebatService implements DatabaseConstants {
      * @return debate
      * @throws SQLException
      */
-
     public boolean delete(int id) throws SQLException {
         Debat debat = read(id);
         return DebatCRUD.delete(debat);
-
 
     }
 
@@ -121,18 +121,19 @@ public class DebatService implements DatabaseConstants {
         return debats.get(0);
     }
 
-    public boolean exist(Debat  debat) throws Exception{
-        if(getBySujet(debat.getSujet())!=null)
+    public boolean exist(Debat debat) throws Exception {
+        if (getBySujet(debat.getSujet()) != null) {
             return true;
+        }
         return false;
     }
 
-    public boolean exist(int id) throws Exception{
-        if(read(id)!=null)
+    public boolean exist(int id) throws Exception {
+        if (read(id) != null) {
             return true;
+        }
         return false;
     }
-
 
     /**
      * Get all the debates of the database
@@ -143,7 +144,6 @@ public class DebatService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
-
     public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         return DebatCRUD.read();
     }
@@ -161,29 +161,28 @@ public class DebatService implements DatabaseConstants {
         return DebatCRUD.read(criterias);
     }
 
-
-/**
-     * get all debate by entity 
+    /**
+     * get all debate by entity
      *
      * @param entityType
+     * @param startDate
+     * @param endDate
      * @return List debate
      * @throws SQLException
+     * @throws java.text.ParseException
      */
+    public List<Debat> getAllDebatByEntity(EntityType entityType, String startDate, String endDate) throws SQLException, ParseException {
+        EntityManager em = Persistence.createEntityManagerFactory(DatabaseConstants.PERSISTENCE_UNIT).createEntityManager();
 
-   public List<Debat> getAllDebatByEntity(EntityType entityType, long dateDebut, long dateFin) throws SQLException {
-        Criterias criterias = new Criterias();
-
-        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
-
-        criterias.addCriteria(new Criteria(new Rule("dateCreation", ">=", dateDebut),"AND"));
-        criterias.addCriteria(new Criteria(new Rule("dateCreation", "<=", dateFin),null));
-//       Logger.getLogger(DebatController.class.getName()).log(Level.SEVERE, null,"critères de sql"+criterias);
-
-        return DebatCRUD.read(criterias);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        long dateDebut = formatter.parse(startDate).getTime();
+        long dateFin = formatter.parse(endDate).getTime();
+        TypedQuery<Debat> query = em.createQuery(
+                "SELECT e FROM Commentaire e WHERE e.dateCreation BETWEEN ?1 AND ?2", Debat.class);
+        List<Debat> debats = query.setParameter(1, dateDebut)
+                .setParameter(2, dateFin)
+                .getResultList();
+        return debats;
     }
 
-
-
 }
-
-
