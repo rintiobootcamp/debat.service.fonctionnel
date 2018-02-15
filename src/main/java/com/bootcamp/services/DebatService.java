@@ -179,7 +179,7 @@ public class DebatService implements DatabaseConstants {
         long dateFin = formatter.parse(endDate).getTime();
         TypedQuery<Debat> query = em.createQuery(
                 "SELECT e FROM Debat e WHERE e.entityType =?1 AND e.dateCreation BETWEEN ?2 AND ?3", Debat.class);
-        List<Debat> debats = query.setParameter(1, entityType)
+        List<Debat> debats = query.setParameter(1, entityType.name())
                                   .setParameter(2, dateDebut)
                                   .setParameter(3, dateFin)
                                   .getResultList();
