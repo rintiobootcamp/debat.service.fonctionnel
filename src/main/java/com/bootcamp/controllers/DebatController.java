@@ -73,7 +73,7 @@ public class DebatController {
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read All Debats", notes = "Read all the Debats")
-    public ResponseEntity<List<Debat>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public ResponseEntity<List<Debat>> read() throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
         List<Debat> debats = debatService.read(request);
         return new ResponseEntity<List<Debat>>(debats, HttpStatus.OK);
     }
@@ -91,7 +91,7 @@ public class DebatController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Get one Debats", notes = "Read a particular Debats")
-    public ResponseEntity<Debat> getById(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public ResponseEntity<Debat> getById(@PathVariable int id) throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
         Debat debat = debatService.read(id);
         return new ResponseEntity<Debat>(debat, HttpStatus.OK);
     }
@@ -99,7 +99,7 @@ public class DebatController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Delete one Debats", notes = "delete a particular Debats")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public ResponseEntity<Boolean> delete(@PathVariable int id) throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
         boolean done = debatService.delete(id);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
@@ -116,7 +116,7 @@ public class DebatController {
     @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
-    public ResponseEntity<List<Debat>> readAllDebatByEntity(@PathVariable("entityType") String entityType, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+    public ResponseEntity<List<Debat>> readAllDebatByEntity(@PathVariable("entityType") String entityType, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws Exception {
 
         EntityType entite = EntityType.valueOf(entityType);
         List<Debat> debats = new ArrayList<>();

@@ -8,7 +8,10 @@ import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.DebatCRUD;
+import com.bootcamp.entities.Censure;
 import com.bootcamp.entities.Debat;
+import com.rintio.elastic.client.ElasticClient;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +19,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
@@ -58,7 +63,7 @@ public class DebatService implements DatabaseConstants {
      * @return debate
      * @throws SQLException
      */
-    public boolean delete(int id) throws SQLException {
+    public boolean delete(int id) throws Exception {
         Debat debat = read(id);
         return DebatCRUD.delete(debat);
 
@@ -71,12 +76,11 @@ public class DebatService implements DatabaseConstants {
      * @return debate
      * @throws SQLException
      */
-    public Debat read(int id) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("id", "=", id));
-        List<Debat> debats = DebatCRUD.read(criterias);
-
-        return debats.get(0);
+    public Debat read(int id) throws Exception {
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
+//        List<Debat> debats = DebatCRUD.read(criterias);
+        return getAllDebat().stream().filter(t->t.getId()==id).findFirst().get();
     }
 
     /**
@@ -89,12 +93,12 @@ public class DebatService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
-    public List<Debat> read(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public List<Debat> read(HttpServletRequest request) throws SQLException, Exception, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
         List<Debat> debats = null;
         if (criterias == null && fields == null) {
-            debats = DebatCRUD.read();
+            debats = getAllDebat();
         } else if (criterias != null && fields == null) {
             debats = DebatCRUD.read(criterias);
         } else if (criterias == null && fields != null) {
@@ -106,19 +110,31 @@ public class DebatService implements DatabaseConstants {
         return debats;
     }
 
-    public List<Debat> getByEntity(EntityType entityType, int entityId) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
-        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), null));
-        return DebatCRUD.read(criterias);
+
+    public List<Debat> getAllDebat() throws Exception{
+        ElasticClient elasticClient = new ElasticClient();
+        List<Object> objects = elasticClient.getAllObject("debats");
+        ModelMapper modelMapper = new ModelMapper();
+        List<Debat> rest = new ArrayList<>();
+        for(Object obj:objects){
+            rest.add(modelMapper.map(obj,Debat.class));
+        }
+        return rest;
     }
 
-    public Debat getBySujet(String sujet) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("sujet", "=", sujet));
-        List<Debat> debats = DebatCRUD.read(criterias);
+    public List<Debat> getByEntity(EntityType entityType, int entityId) throws Exception {
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
+//        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), null));
+//        return DebatCRUD.read(criterias);
+        return getAllDebat().stream().filter(t->t.getEntityType().equals(entityType)).filter(t->t.getEntityId()==entityId).collect(Collectors.toList());
+    }
 
-        return debats.get(0);
+    public Debat getBySujet(String sujet) throws Exception {
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("sujet", "=", sujet));
+//        List<Debat> debats = DebatCRUD.read(criterias);
+        return getAllDebat().stream().filter(t->t.getSujet().equals(sujet)).findFirst().get();
     }
 
     public boolean exist(Debat debat) throws Exception {
@@ -144,8 +160,8 @@ public class DebatService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
-    public List<Debat> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
-        return DebatCRUD.read();
+    public List<Debat> getAll() throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
+        return getAllDebat();
     }
 
     /**
@@ -155,10 +171,11 @@ public class DebatService implements DatabaseConstants {
      * @return List debate
      * @throws SQLException
      */
-    public List<Debat> getAllDebatByEntity(EntityType entityType) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
-        return DebatCRUD.read(criterias);
+    public List<Debat> getAllDebatByEntity(EntityType entityType) throws Exception {
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
+//        return DebatCRUD.read(criterias);
+        return getAllDebat().stream().filter(t->t.getEntityType().equals(entityType)).collect(Collectors.toList());
     }
 
     /**
