@@ -32,7 +32,20 @@ import javax.persistence.TypedQuery;
  */
 @Component
 public class DebatService implements DatabaseConstants {
+ElasticClient elasticClient;
+public DebatService(){
+    elasticClient = new ElasticClient();
+}
 
+    public boolean createAllIndexDebat()throws Exception{
+        ElasticClient elasticClient = new ElasticClient();
+        List<Debat> debats = DebatCRUD.read();
+        for (Debat debat : debats){
+            elasticClient.creerIndexObjectNative("debats","debat",debat,debat.getId());
+//            LOG.info("debat "+debat.getId()+" created");
+        }
+        return true;
+    }
     /**
      * Insert the given debate entity in the database
      *

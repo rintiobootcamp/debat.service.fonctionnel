@@ -38,6 +38,17 @@ public class DebatController {
     @Autowired
     HttpServletRequest request;
 
+
+    @RequestMapping(value = "/elasticdata",method = RequestMethod.GET)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Create Elasticsearch indexes", notes = "Create Elasticsearch indesxes")
+    public ResponseEntity<String> createIndexs() throws Exception {
+        String retour = "NOT DONE";
+        if (debatService.createAllIndexDebat())
+            retour = "DONE";
+        return new ResponseEntity<>(retour, HttpStatus.OK);
+    }
+
     /**
      * Create a new debate in the database
      *
