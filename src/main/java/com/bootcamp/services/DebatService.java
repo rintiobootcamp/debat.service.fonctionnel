@@ -147,7 +147,8 @@ public void DebatService(){
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
 //        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), null));
 //        return DebatCRUD.read(criterias);
-        return getAllDebat().stream().filter(t->t.getEntityType().equals(entityType) && t.getEntityId()==entityId).collect(Collectors.toList());
+        List<Debat> rest =  getAllDebat().stream().filter(t->t.getEntityType().equals(entityType) ).collect(Collectors.toList());
+        return rest.stream().filter(t->t.getEntityId()==entityId).collect(Collectors.toList());
     }
 
     public Debat getBySujet(String sujet) throws Exception {
