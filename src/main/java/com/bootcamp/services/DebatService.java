@@ -55,9 +55,10 @@ public void DebatService(){
      * @return debate
      * @throws SQLException
      */
-    public Debat create(Debat debat) throws SQLException {
+    public Debat create(Debat debat) throws Exception {
         debat.setDateCreation(System.currentTimeMillis());
         DebatCRUD.create(debat);
+        createAllIndexDebat();
         return debat;
     }
 
@@ -67,8 +68,10 @@ public void DebatService(){
      * @param debat
      * @throws SQLException
      */
-    public boolean update(Debat debat) throws SQLException {
-        return DebatCRUD.update(debat);
+    public boolean update(Debat debat) throws Exception {
+        if(DebatCRUD.update(debat))
+            createAllIndexDebat();
+        return true;
     }
 
     /**
@@ -80,7 +83,9 @@ public void DebatService(){
      */
     public boolean delete(int id) throws Exception {
         Debat debat = read(id);
-        return DebatCRUD.delete(debat);
+        if(DebatCRUD.delete(debat))
+            createAllIndexDebat();
+        return  true;
 
     }
 
@@ -142,7 +147,7 @@ public void DebatService(){
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
 //        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), null));
 //        return DebatCRUD.read(criterias);
-        return getAllDebat().stream().filter(t->t.getEntityType().equals(entityType)).filter(t->t.getEntityId()==entityId).collect(Collectors.toList());
+        return getAllDebat().stream().filter(t->t.getEntityType().equals(entityType) && t.getEntityId()==entityId).collect(Collectors.toList());
     }
 
     public Debat getBySujet(String sujet) throws Exception {
