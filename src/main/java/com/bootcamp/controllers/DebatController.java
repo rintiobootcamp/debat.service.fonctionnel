@@ -59,7 +59,7 @@ public class DebatController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a debat", notes = "Create a debat")
-    public ResponseEntity<Debat> create(@RequestBody Debat debat) throws SQLException {
+    public ResponseEntity<Debat> create(@RequestBody Debat debat) throws Exception {
         debat = debatService.create(debat);
         return new ResponseEntity<>(debat, HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class DebatController {
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a debat", notes = "Update a debat")
-    public ResponseEntity<Boolean> update(@RequestBody Debat debat) throws SQLException {
+    public ResponseEntity<Boolean> update(@RequestBody Debat debat) throws Exception {
         boolean done = debatService.update(debat);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
