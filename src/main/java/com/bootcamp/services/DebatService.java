@@ -147,7 +147,7 @@ public void DebatService(){
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
 //        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), null));
 //        return DebatCRUD.read(criterias);
-        List<Debat> rest =  getAllDebat().stream().filter(t->t.getEntityType().equals(entityType) ).collect(Collectors.toList());
+        List<Debat> rest =  getAllDebat().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString()) ).collect(Collectors.toList());
         return rest.stream().filter(t->t.getEntityId()==entityId).collect(Collectors.toList());
     }
 
@@ -155,7 +155,7 @@ public void DebatService(){
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("sujet", "=", sujet));
 //        List<Debat> debats = DebatCRUD.read(criterias);
-        return getAllDebat().stream().filter(t->t.getSujet().equals(sujet)).findFirst().get();
+        return getAllDebat().stream().filter(t->t.getSujet().equalsIgnoreCase(sujet)).findFirst().get();
     }
 
     public boolean exist(Debat debat) throws Exception {
@@ -196,7 +196,7 @@ public void DebatService(){
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return DebatCRUD.read(criterias);
-        return getAllDebat().stream().filter(t->t.getEntityType().equals(entityType)).collect(Collectors.toList());
+        return getAllDebat().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString())).collect(Collectors.toList());
     }
 
     /**
