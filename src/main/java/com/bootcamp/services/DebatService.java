@@ -34,13 +34,21 @@ import javax.persistence.TypedQuery;
 @Component
 public class DebatService implements DatabaseConstants {
 ElasticClient elasticClient;
+private List<Debat> debats;
     @PostConstruct
 public void DebatService(){
+        this.debats = new ArrayList<>();
     elasticClient = new ElasticClient();
 }
 
+public List<Debat> lire() throws Exception{
+       if(this.debats.isEmpty())
+           getAllDebat();
+       return  this.debats;
+}
+
     public boolean createAllIndexDebat()throws Exception{
-        ElasticClient elasticClient = new ElasticClient();
+//        ElasticClient elasticClient = new ElasticClient();
         List<Debat> debats = DebatCRUD.read();
         for (Debat debat : debats){
             elasticClient.creerIndexObjectNative("debats","debat",debat,debat.getId());
@@ -100,7 +108,7 @@ public void DebatService(){
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("id", "=", id));
 //        List<Debat> debats = DebatCRUD.read(criterias);
-        return getAllDebat().stream().filter(t->t.getId()==id).findFirst().get();
+        return lire().stream().filter(t->t.getId()==id).findFirst().get();
     }
 
     /**
@@ -118,7 +126,7 @@ public void DebatService(){
         List<String> fields = RequestParser.getFields(request);
         List<Debat> debats = null;
         if (criterias == null && fields == null) {
-            debats = getAllDebat();
+            debats = lire();
         } else if (criterias != null && fields == null) {
             debats = DebatCRUD.read(criterias);
         } else if (criterias == null && fields != null) {
@@ -132,13 +140,14 @@ public void DebatService(){
 
 
     public List<Debat> getAllDebat() throws Exception{
-        ElasticClient elasticClient = new ElasticClient();
+//        ElasticClient elasticClient = new ElasticClient();
         List<Object> objects = elasticClient.getAllObject("debats");
         ModelMapper modelMapper = new ModelMapper();
         List<Debat> rest = new ArrayList<>();
         for(Object obj:objects){
             rest.add(modelMapper.map(obj,Debat.class));
         }
+        this.debats = rest;
         return rest;
     }
 
@@ -147,7 +156,7 @@ public void DebatService(){
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
 //        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), null));
 //        return DebatCRUD.read(criterias);
-        List<Debat> rest =  getAllDebat().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString()) ).collect(Collectors.toList());
+        List<Debat> rest =  lire().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString()) ).collect(Collectors.toList());
         return rest.stream().filter(t->t.getEntityId()==entityId).collect(Collectors.toList());
     }
 
@@ -155,7 +164,7 @@ public void DebatService(){
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("sujet", "=", sujet));
 //        List<Debat> debats = DebatCRUD.read(criterias);
-        return getAllDebat().stream().filter(t->t.getSujet().equalsIgnoreCase(sujet)).findFirst().get();
+        return lire().stream().filter(t->t.getSujet().equalsIgnoreCase(sujet)).findFirst().get();
     }
 
     public boolean exist(Debat debat) throws Exception {
@@ -182,7 +191,7 @@ public void DebatService(){
      * @throws InvocationTargetException
      */
     public List<Debat> getAll() throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
-        return getAllDebat();
+        return lire();
     }
 
     /**
@@ -196,7 +205,7 @@ public void DebatService(){
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return DebatCRUD.read(criterias);
-        return getAllDebat().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString())).collect(Collectors.toList());
+        return lire().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString())).collect(Collectors.toList());
     }
 
     /**
